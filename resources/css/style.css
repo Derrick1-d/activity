@@ -1,0 +1,115 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* body {
+    background-color: whitesmoke;
+} */
+
+.login-container {
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+}
+
+.login-image {
+    background-color: #eef5ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.login-form {
+    padding: 40px;
+}
+
+.login-form h2 {
+    font-weight: bold;
+    color: #333;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.form-label {
+    font-weight: bold;
+}
+
+.create-account,
+.forgot-password {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.create-account:hover,
+.forgot-password:hover {
+    text-decoration: underline;
+}
+
+.register-container {
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.register-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0f4ff;
+    padding: 20px;
+}
+
+.register-form {
+    padding: 40px;
+}
+
+.register-form h2 {
+    font-weight: bold;
+    color: #333;
+}
+
+.btn-primary {
+    background-color: #6c63ff;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #5a54e8;
+}
+
+.form-label {
+    font-weight: bold;
+}
+
+.form-text {
+    font-size: 14px;
+    color: #555;
+}
+
+.already-account {
+    color: #6c63ff;
+    text-decoration: none;
+}
+
+.already-account:hover {
+    text-decoration: underline;
+}
+
+.help-link {
+    color: #999;
+    text-decoration: none;
+}
+
+.help-link:hover {
+    text-decoration: underline;
+}

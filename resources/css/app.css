@@ -1,0 +1,182 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+.container {
+    /* background-color: white; */
+    /* border-radius: 20px; */
+    /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); Soft shadow for visual separation */
+}
+
+/* Stylish heading style */
+.stylish-heading {
+    font-weight: 700; /* Makes the text bold */
+    color: #007bff; /* Primary color (Bootstrap’s primary color, or customize as needed) */
+    text-align: center; /* Centers the heading */
+    font-size: 2.5rem; /* Increases font size for emphasis */
+    letter-spacing: 1px; /* Adds spacing between letters for a modern look */
+    text-transform: uppercase; /* Makes the text all uppercase */
+    padding-bottom: 0.5rem; /* Adds spacing below */
+    border-bottom: 2px solid #007bff; /* Adds an underline effect */
+    display: inline-block; /* Ensures border-bottom does not span full width */
+}
+
+.table {
+    font-size: 15px; /* Smaller font size */
+    margin-bottom: 1rem; /* Prevents the table from crowding pagination */
+}
+
+.card-header {
+    background-color: #f8f9fa;
+    /* padding: 0.75rem 1.25rem; */
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.card {
+    /* width: 80%; */
+    max-width: 90%;
+    margin: auto; /* Center horizontally */
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* padding: 20px; Add padding for spacing */
+    background-color: #fff; /* Optional: White background */
+}
+
+.card-header {
+    border-bottom: 1px solid #ddd;
+}
+
+.table th,
+.table td {
+    vertical-align: middle;
+    /* padding: 0.5rem; */
+}
+
+.table-hover tbody tr:hover {
+    background-color: #f9f9f9; /* Highlight on hover */
+}
+
+.table-sm th,
+.table-sm td {
+    /* padding: 0.5rem; */
+}
+
+.pagination {
+    margin-bottom: 0; /* Aligns pagination neatly */
+}
+
+/* Modal header styling */
+.modal-header {
+    background-color: #007bff; /* Change background to primary color */
+    color: white; /* White text for better contrast */
+}
+
+.modal-content {
+    border-radius: 8px; /* Adjust the radius as desired */
+    overflow: hidden; /* Ensures the modal contents don't overflow */
+}
+
+/* Optional: Add a subtle shadow for a more elegant look */
+.modal-content {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Close button styling */
+.modal-header .close {
+    color: white;
+}
+
+/* Form field styling */
+.modal-body input,
+.modal-body select,
+.modal-body textarea {
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    padding: 8px;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+/* Footer button styling */
+.modal-footer .btn-secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+.modal-footer .btn-primary {
+    background-color: #007bff;
+    color: white;
+}
+
+/* Container for 3D progress bar */
+.progress-3d {
+    position: relative;
+    width: 100%;
+    height: 30px;
+    background: linear-gradient(145deg, #e0e0e0, #f9f9f9);
+    border-radius: 15px;
+    box-shadow: inset 3px 3px 6px #d1d1d1, inset -3px -3px 6px #ffffff;
+    overflow: hidden;
+}
+
+/* Inner progress bar */
+.progress-bar-3d {
+    position: relative;
+    height: 100%;
+    background: linear-gradient(145deg, #6ab04c, #badc58);
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    font-weight: bold;
+    color: white;
+    text-shadow: 1px 1px 2px #000;
+    box-shadow: inset -1px -1px 5px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+}
+
+/* Bubbles container */
+.bubbles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+/* Individual bubble */
+.bubble {
+    position: absolute;
+    bottom: 0;
+    width: 10px;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 50%;
+    animation: bubble-move 3s ease-in-out infinite;
+}
+
+/* Bubble animation */
+@keyframes bubble-move {
+    0% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+    100% {
+        transform: translateY(-100px);
+        opacity: 0;
+    }
+}
+
+button.active {
+    background-color: #004085 !important;
+    color: #fff;
+}
