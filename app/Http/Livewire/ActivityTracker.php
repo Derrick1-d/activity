@@ -12,33 +12,25 @@ class ActivityTracker extends Component
     use WithPagination;
 
     public $search = '';
-
     public $description;
-
     public $date;
-
     public $status;
-
     public $submitter;
-
     public $comments;
-
     public $editMode = false;
-
     public $activityId;
 
-    public $showDelete = [];
+    public $selectAll = false; // Initialize the property
 
+    public $selectedItems = []; // Tracks selected activity IDs
     public $completionPercentage = 0;
-
     public $start_date;
-
     public $end_date;
-
     public $filter = 'all'; // 'all', 'open', or 'closed'
 
     // Event listeners
     public $listeners = [
+        'deleteSelectedConfirmed' => 'deleteSelected', // New event for bulk delete
         'deleteConfirmed' => 'deleteActivity',
         'activityUpdated' => 'updateCompletionPercentage',
     ];
@@ -54,7 +46,7 @@ class ActivityTracker extends Component
 
     public function mount()
     {
-        if (! Auth::check()) {
+        if (!Auth::check()) {
             abort(403, 'Unauthorized action.');
         }
 
@@ -88,21 +80,39 @@ class ActivityTracker extends Component
         ]);
     }
 
-    public function toggleDeleteIcon($id)
+    public function loadActivities($type)
     {
-        if (in_array($id, $this->showDelete)) {
-            $this->showDelete = array_diff($this->showDelete, [$id]);
+        if (in_array($type, ['all', 'open', 'closed'])) {
+            $this->filter = $type;
         } else {
-            $this->showDelete[] = $id;
+            $this->filter = 'all';
         }
+
+        $this->resetPage();
     }
+    public function viewActivity($id)
+{
+    $activity = Activity::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
+
+    // Perform the logic you need, for example:
+    $this->emit('activityViewed', $activity);
+
+    // Optional: You can also assign activity details to component properties
+    $this->description = $activity->description;
+    $this->date = $activity->date;
+    $this->status = $activity->status;
+    $this->comments = $activity->comments;
+    $this->submitter = $activity->submitter;
+
+}
+
 
     public function createActivity()
     {
         $this->validate();
 
         Activity::create([
-            'user_id' => Auth::id(), // Associate with the authenticated user
+            'user_id' => Auth::id(),
             'description' => $this->description,
             'date' => $this->date,
             'status' => $this->status,
@@ -116,25 +126,29 @@ class ActivityTracker extends Component
         session()->flash('message', 'Activity created successfully.');
     }
 
-    public function viewActivity($id)
+    public function deleteSelected()
     {
-        $activity = Activity::where('id', $id)
+        Activity::whereIn('id', $this->selectedItems)
             ->where('user_id', Auth::id())
-            ->firstOrFail();
+            ->delete();
 
-        $this->activityId = $activity->id;
-        $this->description = $activity->description;
-        $this->date = $activity->date;
-        $this->status = $activity->status;
-        $this->submitter = $activity->submitter;
-        $this->comments = $activity->comments;
+        $this->selectedItems = []; // Clear selected items
+        $this->updateCompletionPercentage();
+        session()->flash('message', 'Selected activities deleted successfully.');
+    }
+
+    public function toggleSelectAll()
+    {
+        if ($this->selectAll) {
+            $this->selectedItems = Activity::pluck('id')->toArray(); // Select all
+        } else {
+            $this->selectedItems = []; // Deselect all
+        }
     }
 
     public function editActivity($id)
     {
-        $activity = Activity::where('id', $id)
-            ->where('user_id', Auth::id())
-            ->firstOrFail();
+        $activity = Activity::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
 
         $this->activityId = $activity->id;
         $this->description = $activity->description;
@@ -167,17 +181,6 @@ class ActivityTracker extends Component
         session()->flash('message', 'Activity updated successfully.');
     }
 
-    public function deleteActivity($id)
-    {
-        $activity = Activity::where('id', $id)
-            ->where('user_id', Auth::id())
-            ->firstOrFail();
-
-        $activity->delete();
-        $this->updateCompletionPercentage();
-        session()->flash('message', 'Activity deleted successfully.');
-    }
-
     private function resetForm()
     {
         $this->description = '';
@@ -192,11 +195,13 @@ class ActivityTracker extends Component
     private function calculateProgress()
     {
         $totals = Activity::where('user_id', Auth::id())
-            ->selectRaw('
+            ->selectRaw(
+                '
                 COUNT(*) as total,
                 SUM(status = "completed") as completed,
                 SUM(status = "in_progress") as in_progress
-            ')
+            ',
+            )
             ->first();
 
         return [
@@ -210,15 +215,8 @@ class ActivityTracker extends Component
     {
         $progress = $this->calculateProgress();
 
-        $this->completionPercentage = $progress['total'] > 0
-            ? (($progress['completed'] * 1) + ($progress['in_progress'] * 0.5)) / $progress['total'] * 100
-            : 0;
+        $this->completionPercentage = $progress['total'] > 0 ? (($progress['completed'] * 1 + $progress['in_progress'] * 0.5) / $progress['total']) * 100 : 0;
 
         $this->emit('progressUpdated', $this->completionPercentage);
-    }
-
-    public function loadActivities($filter)
-    {
-        $this->filter = $filter;
     }
 }
